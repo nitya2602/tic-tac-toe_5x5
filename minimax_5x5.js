@@ -1,34 +1,36 @@
-var board = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+var board = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 var level = -1;
 var human = "X";
 var bot = "O";
 var finished = false;
 var clicked = [];
-var w1,w2,w3,w4;
+var w1,w2,w3,w4,w5;
 
 function avPositions(newboard) {
     return newboard.filter(function (elem) {return elem!="X" && elem!="O";})
 }
 
-function winUtil(newboard, player, a,b,c,d) {
+function winUtil(newboard, player, a,b,c,d,e) {
     if (newboard[a]==player && newboard[b]==player && 
-        newboard[c]==player && newboard[d]==player) {
-        w1 = a, w2 = b, w3 = c, w4 = d;
+        newboard[c]==player && newboard[d]==player && newboard[e]==player) {
+        w1 = a, w2 = b, w3 = c, w4 = d, w5 = e;
         return true;
     }
     return false;
 }
 function winCondition(newboard, player) {
-    return(winUtil(newboard,player,0,1,2,3) ||
-        winUtil(newboard,player,4,5,6,7) ||
-        winUtil(newboard,player,8,9,10,11) ||
-        winUtil(newboard,player,12,13,14,15) ||
-        winUtil(newboard,player,0,4,8,12) ||
-        winUtil(newboard,player,1,5,9,13) ||
-        winUtil(newboard,player,2,6,10,14) ||
-        winUtil(newboard,player,3,7,11,15) ||
-        winUtil(newboard,player,0,5,10,15) ||
-        winUtil(newboard,player,3,6,9,12))
+    return(winUtil(newboard,player,0,1,2,3,4) ||
+        winUtil(newboard,player,5,6,7,8,9) ||
+        winUtil(newboard,player,10,11,12,13,14) ||
+        winUtil(newboard,player,15,16,17,18,19) ||
+        winUtil(newboard,player,20,21,22,23,24) ||
+        winUtil(newboard,player,0,5,10,15,20) ||
+        winUtil(newboard,player,1,6,11,16,21) ||
+        winUtil(newboard,player,2,7,12,17,22) ||
+        winUtil(newboard,player,3,8,13,18,23) ||
+        winUtil(newboard,player,4,9,14,19,24) ||
+        winUtil(newboard,player,0,6,12,18,24) ||
+        winUtil(newboard,player,4,8,12,16,20))
 }
 
 function minimax(newboard,player) {
@@ -78,11 +80,12 @@ function minimax(newboard,player) {
     return finalMove;
 }
 
-function makeLine(a,b,c,d) {
+function makeLine(a,b,c,d,e) {
     document.getElementById("sq"+a).style.color = "red";
     document.getElementById("sq"+b).style.color = "red";
     document.getElementById("sq"+c).style.color = "red";
     document.getElementById("sq"+d).style.color = "red";
+    document.getElementById("sq"+e).style.color = "red";
 }
 
 function makeMove(elem) {
@@ -97,7 +100,7 @@ function makeMove(elem) {
     if(winCondition(board,human)) {
         console.log("Human Wins !");
         finished = true;
-        makeLine(w1,w2,w3,w4);
+        makeLine(w1,w2,w3,w4,w5);
         document.getElementById("footer").innerHTML+="You Win !";
         document.getElementById("refresh").style.visibility = "visible";
         return ;
@@ -117,8 +120,8 @@ function makeMove(elem) {
     }
     else if(level == 1)
     {
-        var chance = Math.floor(Math.random() * (9));
-        if(chance <= 3) {
+        var chance = Math.floor(Math.random() * (25));
+        if(chance <= 5) {
             botPos.index = avBoard[Math.floor(Math.random() * avBoard.length)];
             console.log("Random botPos = " + botPos.index);
         }
@@ -132,7 +135,7 @@ function makeMove(elem) {
     if(winCondition(board,bot)) {
         console.log("Bot Wins !");
         finished =true;
-        makeLine(w1,w2,w3,w4);
+        makeLine(w1,w2,w3,w4,w5);
         document.getElementById("footer").innerHTML+="Bot Wins !";
         document.getElementById("refresh").style.visibility = "visible";
     }
